@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent, getByTestId } from '@testing-library/react';
 import App from './App';
 
 test('title is on screen', () => {
@@ -15,4 +15,14 @@ test('form is on screen', () => {
   expect(formElement).toBeInTheDocument();
   expect(taskSubmitElement).toBeInTheDocument();
   expect(taskInputElement).toBeInTheDocument();
+})
+
+test('when task is added it appears on screen', () => {
+  render(<App />);
+  const formInput = screen.getByTestId("form-input");
+  const formSubmit = screen.getByTestId("form-submit");
+  const taskElement = screen.getByTestId("task-element");
+  fireEvent.change(formInput, {target: {value: "test"}});
+  fireEvent.click(formSubmit);
+  expect(taskElement).toHaveTextContent("test");
 })
